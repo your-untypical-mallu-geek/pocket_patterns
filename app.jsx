@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 export default function App() {
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  
   const [expenses, setExpenses] = useState([]);
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('Food');
@@ -8,7 +10,7 @@ export default function App() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/expenses')
+    fetch(`${API_URL}/api/expenses`)
       .then(res => res.json())
       .then(data => setExpenses(data))
       .catch(err => console.error('Error connecting to backend:', err));
@@ -19,7 +21,7 @@ export default function App() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/api/expenses', {
+      const response = await fetch(`${API_URL}/api/expenses`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: parseFloat(amount), category, date })
